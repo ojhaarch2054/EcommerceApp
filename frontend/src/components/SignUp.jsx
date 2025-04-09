@@ -66,9 +66,9 @@ const SignUp = () => {
             id="password2"
             placeholder="Password"
           />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
+        </div><br />
+        <button type="submit" className="btn btn-secondary">
+          Sign Up
         </button>
       </form>
       </div>
