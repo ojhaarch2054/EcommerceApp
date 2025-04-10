@@ -1,14 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const App = () => {
 
   return (
     <>
-     <h1>Welcome to my ecommerce app</h1>
-     <SignUp/>
-     <LogIn/>
+    <Router>
+      <Routes>
+        <Route path="/" element={<SignUp />} />
+        <Route path="/login" element={<LogIn />} />
+      </Routes>
+    </Router>
     </>
   )
 }
