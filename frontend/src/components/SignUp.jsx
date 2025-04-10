@@ -4,21 +4,12 @@ const SignUp = () => {
     <div className="container">
       <form>
       <div className="form-group">
-          <label>Firstname</label>
+          <label>Fullname</label>
           <input
-            type="firstname"
+            type="fullname"
             className="form-control"
-            id="firstName"
-            placeholder="eg: Jenni"
-          />
-        </div>
-        <div className="form-group">
-          <label>Lastname</label>
-          <input
-            type="lastname"
-            className="form-control"
-            id="lastName"
-            placeholder="eg: Hikkunen"
+            id="fullname"
+            placeholder="eg: Jenni hiukkonen"
           />
         </div>
         <div className="form-group">

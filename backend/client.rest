@@ -1,2 +1,15 @@
 //get all users data
-GET http://localhost:3000/
+GET http://localhost:3000/users
+
+//to register user
+###
+POST http://localhost:3000/register_users
+Content-Type: application/json
+
+{
+  "name": "example1",
+  "email": "example1@gmail.com",
+  "phone_number": "1234567890",
+  "address": "New york",
+  "password": "myPassword"
+}
