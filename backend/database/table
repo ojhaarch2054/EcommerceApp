@@ -9,8 +9,11 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE users
+ADD COLUMN role VARCHAR(50) DEFAULT 'admin';
+
 /*hardcoded data for users table*/
 INSERT INTO users (name, email, phone_number, address, password) VALUES
-('John Doe', 'john.doe@example.com', '1234567890', '123 Main St, Springfield', 'abcdef'),
-('Jane Smith', 'jane.smith@example.com', '9876543210', '456 Elm St, Metropolis', 'abcdefg'),
-('Alice hiuminen', 'alice.johnson@example.com', '5551234567', '789 Oak St, Gotham', 'abcdefgh')
+('John Doe', 'john.doe@example.com', '1234567890', '123 Main St, Springfield', 'abcdef', 'admin'),
+('Jane Smith', 'jane.smith@example.com', '9876543210', '456 Elm St, Metropolis', 'abcdefg', 'admin'),
+('Alice hiuminen', 'alice.johnson@example.com', '5551234567', '789 Oak St, Gotham', 'abcdefgh', 'admin')

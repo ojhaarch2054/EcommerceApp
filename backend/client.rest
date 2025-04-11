@@ -13,3 +13,13 @@ Content-Type: application/json
   "address": "New york",
   "password": "myPassword"
 }
+
+//login
+###
+POST http://localhost:3000/logIn_users
+Content-Type: application/json
+
+{
+  "email": "example2@gmail.com",
+  "password": "myPassword"
+}
