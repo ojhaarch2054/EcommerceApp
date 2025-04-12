@@ -10,6 +10,7 @@ const Logout = () => {
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     const logOutBtn = async () => {
+        console.log("btn clicked")
         if (!isAuthenticate) {
             alert("You are not logged in.");
             return;
@@ -31,7 +32,7 @@ const Logout = () => {
 
     return (
         <div className="d-flex justify-content-center">
-            <button onClick={logOutBtn} className="btn logOutbtn w-25 mb-5 btn-secondary">
+            <button onClick={logOutBtn} className="btn logOutbtn btn-danger">
                 Logout
             </button>
             {isLoggedOut && <p>You have been logged out successfully.</p>}
