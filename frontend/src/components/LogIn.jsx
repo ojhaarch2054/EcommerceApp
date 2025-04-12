@@ -51,8 +51,6 @@ const LogIn = () => {
     console.log("logIn btn clicked yayyyy")
   }
 
- 
-  
     return(
         <>
         <div className="container">

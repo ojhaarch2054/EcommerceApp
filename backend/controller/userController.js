@@ -108,7 +108,7 @@ const postUserLogIn = async (req, res) => {
   }
 };
 
-//to logout
+
 //for logout
 const logOut = async (req, res) => {
   try {

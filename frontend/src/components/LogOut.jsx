@@ -31,7 +31,7 @@ const Logout = () => {
 
     return (
         <div className="d-flex justify-content-center">
-            <button onClick={logOutBtn} className="btn logOutbtn w-25 mb-5">
+            <button onClick={logOutBtn} className="btn logOutbtn w-25 mb-5 btn-secondary">
                 Logout
             </button>
             {isLoggedOut && <p>You have been logged out successfully.</p>}

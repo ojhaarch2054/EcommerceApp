@@ -24,3 +24,7 @@ Content-Type: application/json
   "email": "example3@gmail.com",
   "password": "myPassword"
 }
+
+//get rqst to view product list from api
+###
+GET http://localhost:3000/products

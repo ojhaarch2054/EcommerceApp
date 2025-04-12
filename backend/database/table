@@ -17,3 +17,21 @@ INSERT INTO users (name, email, phone_number, address, password) VALUES
 ('John Doe', 'john.doe@example.com', '1234567890', '123 Main St, Springfield', 'abcdef', 'admin'),
 ('Jane Smith', 'jane.smith@example.com', '9876543210', '456 Elm St, Metropolis', 'abcdefg', 'admin'),
 ('Alice hiuminen', 'alice.johnson@example.com', '5551234567', '789 Oak St, Gotham', 'abcdefgh', 'admin')
+
+/*for product table*/
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    price NUMERIC(10, 2) NOT NULL,
+    discount_percentage NUMERIC(5, 2),
+    rating NUMERIC(3, 2),
+    stock INTEGER,
+    brand VARCHAR(100),
+    category VARCHAR(100),
+    thumbnail TEXT,
+    images TEXT[]
+);
+
+ALTER TABLE products
+DROP COLUMN images;

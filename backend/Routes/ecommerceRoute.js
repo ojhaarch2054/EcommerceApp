@@ -1,6 +1,7 @@
 const express = require('express');
 const { getUsers, postUserSignUp, postUserLogIn,logOut, refreshToken} = require('../controller/userController');
 const { fetchUsers, authorizeRole } = require('../middleware/authenticationMiddleware');
+const { saveProduct } = require('../controller/productController.js');
 
 const router = express.Router();
 
@@ -10,6 +11,10 @@ router.post('/register_users', postUserSignUp);
 router.post('/logIn_users', postUserLogIn);
 router.post('/logout', fetchUsers, authorizeRole(['admin']), logOut);
 router.post('/refresh-token', refreshToken);
+
+//for products
+
+router.get("/products", saveProduct);
 
 
 module.exports = router;
