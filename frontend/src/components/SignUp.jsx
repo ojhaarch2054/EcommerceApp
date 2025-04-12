@@ -28,28 +28,45 @@ const SignUp = () => {
     }));
   };
 
-  const signupBtn = async (e) => {
+  const signupSubmit = async (e) => {
     //prevent form submission
-    e.preventDefault(); 
-    console.log("btn clicked");
+    e.preventDefault();
+    //validation
+    if (
+      !inputs.fullname ||
+      !inputs.emailAddress ||
+      !inputs.phoneNumber ||
+      !inputs.address ||
+      !inputs.password ||
+      !inputs.confirmPassword
+    ) {
+      alert("All fields are required!");
+      return;
+    }
+
+    if (inputs.password !== inputs.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
     try {
       //post request to register user
-      const response = await axios.post("http://localhost:3000/register_users", {
-        name: inputs.fullname,
-        email: inputs.emailAddress,
-        phoneNumber: inputs.phoneNumber,
-        address: inputs.address,
-        password: inputs.password,
-        confirmPassword: inputs.confirmPassword,
-      });
-
+      const response = await axios.post(
+        "http://localhost:3000/register_users",
+        {
+          name: inputs.fullname,
+          email: inputs.emailAddress,
+          phoneNumber: inputs.phoneNumber,
+          address: inputs.address,
+          password: inputs.password,
+          confirmPassword: inputs.confirmPassword,
+        }
+      );
       //show the backend email verification error in frontend
       if (response.status === 400) {
         alert(response.data.error);
         //stop further execution if there is any error
         return;
       }
-
       //update the previous state by adding newly added data
       setUserInfo((prevState) => [...prevState, response.data]);
       setInputs({
@@ -61,8 +78,7 @@ const SignUp = () => {
         confirmPassword: "",
       });
       console.log(inputs.emailAddress + " added");
-       navigate('/login');
-
+      navigate("/login");
     } catch (error) {
       console.error("Error occurred:", error);
       //if error object has response and response has data and data has error, then display the specific error
@@ -74,11 +90,15 @@ const SignUp = () => {
     }
   };
 
+  const signupBtn = () => {
+    console.log("btn clicked yayyyy");
+  };
+
   return (
     <>
-    <h1>Register your email id here: </h1>
+      <h1>Register your email id here: </h1>
       <div className="container">
-        <form>
+        <form onClick={signupSubmit}>
           <div className="form-group">
             <label>Fullname</label>
             <input
@@ -153,7 +173,11 @@ const SignUp = () => {
             />
           </div>
           <br />
-          <button type="submit" className="btn btn-secondary" onClick={signupBtn}>
+          <button
+            type="submit"
+            className="btn btn-secondary"
+            onClick={signupBtn}
+          >
             Sign Up
           </button>
         </form>

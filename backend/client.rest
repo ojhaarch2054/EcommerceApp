@@ -7,11 +7,12 @@ POST http://localhost:3000/register_users
 Content-Type: application/json
 
 {
-  "name": "example2",
-  "email": "example2@gmail.com",
+  "name": "example3",
+  "email": "example3@gmail.com",
   "phone_number": "1234567890",
   "address": "New york",
-  "password": "myPassword"
+  "password": "myPassword",
+  "role":""
 }
 
 //login
@@ -20,6 +21,6 @@ POST http://localhost:3000/logIn_users
 Content-Type: application/json
 
 {
-  "email": "example2@gmail.com",
+  "email": "example3@gmail.com",
   "password": "myPassword"
 }
