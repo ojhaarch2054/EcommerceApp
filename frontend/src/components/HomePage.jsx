@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import NavBar from "./NavBar"
+import NavBar from "./NavBar";
+import { CartContext } from "../context/CartContext";
 
 const HomePage = () => {
   //state to hold the data from response
   const [productList, setProductList] = useState([]);
+  //access addtocart function
+  const { addToCart } = useContext(CartContext);
 
   //fetch product list from backend
   useEffect(() => {
@@ -22,8 +25,8 @@ const HomePage = () => {
 
   return (
     <div>
+       <NavBar />
       <div className="container mt-4">
-        <NavBar/>
         <div className="row">
           {productList.map((product) => (
             <div className="col-md-4 mb-4" key={product.id}>
@@ -39,7 +42,12 @@ const HomePage = () => {
                   <p className="card-text">
                     <strong>Price:</strong> ${product.price}
                   </p>
-                  <button className="btn btn-secondary">Add to Cart</button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => addToCart(product)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>

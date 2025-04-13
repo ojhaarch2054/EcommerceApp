@@ -4,6 +4,7 @@ import { FaHome, FaUser, FaShoppingCart } from 'react-icons/fa';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Logout from './LogOut';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
     const { isAuthenticate, logout } = useAuth();
@@ -15,35 +16,35 @@ const NavBar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">MyApp</a>
+                <Link className="navbar-brand" to="/">MyApp</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <Link className="nav-link" to="/">
                                 <FaHome className="me-2" /> Home
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <Link className="nav-link" to="/">
                                 <FaUser className="me-2" /> Profile
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <Link className="nav-link" to="/carts">
                                 <FaShoppingCart className="me-2" /> Cart
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         {isAuthenticate ? (
                             <>
-                            <h1>You are logged in</h1>
-                            <li className="nav-item">
-                            <Logout/>
-                            </li>
+                                <h1>You are logged in</h1>
+                                <li className="nav-item">
+                                    <Logout />
+                                </li>
                             </>
                         ) : (
                             <>
