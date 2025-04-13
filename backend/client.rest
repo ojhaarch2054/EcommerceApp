@@ -28,3 +28,22 @@ Content-Type: application/json
 //get rqst to view product list from api
 ###
 GET http://localhost:3000/products
+
+
+//add new product
+###
+POST http://localhost:3000/add_product
+Content-Type: application/json
+
+{
+  "title": "eg Product",
+  "description": "This is a eg product description.",
+  "price": 20,
+  "discount_percentage": 10.5,
+  "rating": 4.5,
+  "stock": 100,
+  "brand": "eg Brand",
+  "category": "eg Category",
+  "thumbnail": "https://example.com/sample-thumbnail.jpg",
+  "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]
+}

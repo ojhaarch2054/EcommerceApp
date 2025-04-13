@@ -1,4 +1,5 @@
 const axios = require("axios");
+const db = require("../models/db");
 
 //to fetch products from an API
 const saveProduct = async (req, res) => {
@@ -18,5 +19,57 @@ const saveProduct = async (req, res) => {
   }
 };
 
+//to post product to product table
+const addProductToTable = async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      price,
+      discount_percentage,
+      rating,
+      stock,
+      brand,
+      category,
+      thumbnail,
+      images,
+    } = req.body;
+    console.log(
+      "Received product:",
+      title,
+      description,
+      price,
+      discount_percentage,
+      rating,
+      stock,
+      brand,
+      category,
+      thumbnail,
+      images
+    );
+    //add new product into the products table
+    const result = await db.query(
+      "INSERT INTO products (title, description, price, discount_percentage, rating, stock, brand, category, thumbnail, images) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 ) RETURNING *",
+      [
+        title,
+        description,
+        price,
+        discount_percentage,
+        rating,
+        stock,
+        brand,
+        category,
+        thumbnail,
+        images,
+      ]
+    );
+    console.log("product added:", result.rows[0]);
+    //return newly created product
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error posting product:", error.message, error.stack);
+    res.status(500).json({ error: "Failed to add product" });
+  }
+};
 
-module.exports = { saveProduct};
+module.exports = { saveProduct, addProductToTable };
