@@ -72,4 +72,16 @@ const addProductToTable = async (req, res) => {
   }
 };
 
-module.exports = { saveProduct, addProductToTable };
+//fetch data from product table
+const getProductsFromTable = async(req, res) => {
+  try{
+    const result = await db.query("select * from products");
+    res.status(201).json(result.rows)
+    
+  }catch (error) {
+    console.error("Error fetching product:", error.message, error.stack);
+    res.status(500).json({ error: "Failed to fetch product" });
+  }
+}
+
+module.exports = { saveProduct, addProductToTable, getProductsFromTable };

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 //create the context
@@ -24,6 +24,21 @@ export const CartProvider = ({ children }) => {
       console.error("Error adding product to cart:", error.response?.data || error.message);
     }
   };
+
+   //fetch added products from the db
+   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/cartItems");
+        //api returns an array of products
+        setCartItem(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <CartContext.Provider value={{ cartItem, addToCart }}>
