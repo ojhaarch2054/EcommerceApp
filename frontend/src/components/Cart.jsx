@@ -1,12 +1,20 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import  useAuth  from "../context/Hook/useAuth";
 
 const Cart = () => {
   const { cartItem } = useContext(CartContext);
+  const { isAuthenticate} = useAuth();
+
 
   const paymentBtn = () => {
     console.log("Payment Clicked");
-    alert("You need to login for checkout");
+    if(!isAuthenticate){
+      alert("You need to login for checkout");
+    }
+    else{
+      alert("Thank you for proceeding payment")
+    }
   };
 
   return (
