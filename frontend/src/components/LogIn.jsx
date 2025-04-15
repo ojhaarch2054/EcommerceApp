@@ -1,4 +1,4 @@
-import { useAuth } from "../context/AuthContext";
+import useAuth  from "../context/Hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -79,7 +79,7 @@ const LogIn = () => {
             onChange={handleChange}
           />
         </div><br />
-        <button className="btn btn-secondary" onClick={logInbtn}>Log In</button>
+        <button className="btn btn-secondary" type="submit" onClick={logInbtn}>Log In</button>
         </form>
         </div>
         </>

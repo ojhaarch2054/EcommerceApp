@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/users', getUsers);
 router.post('/register_users', postUserSignUp);
 router.post('/logIn_users', postUserLogIn);
-router.post('/logout', fetchUsers, authorizeRole(['admin']), logOut);
+router.post('/logout', fetchUsers, logOut);
 router.post('/refresh-token', refreshToken);
 
 //for products

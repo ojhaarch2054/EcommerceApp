@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
-import axios from "axios";
+//import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 import Cookies from "js-cookie";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   //save user info
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   //to handle user login
   const logIn = async (email, password) => {
     try {
+      console.log("login with:", email, password); 
       //post rqst to the login endpoint
       const response = await axiosInstance.post("/logIn_users", { email, password });
       const { data } = response;
@@ -36,9 +37,6 @@ export const AuthProvider = ({ children }) => {
           secure: true,
           sameSite: "strict",
         });
-        console.log(setUser);
-        console.log(setToken);
-        console.log(setRefreshToken);
       } else {
         throw new Error("No match role");
       }
@@ -58,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
     Cookies.remove("role");
     Cookies.remove("refreshToken");
+   
   }
 
   //ceate the object of values to provide
@@ -76,5 +75,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-//custom hook to use the AuthContext
-export const useAuth = () => useContext(AuthContext);
+export default AuthProvider;

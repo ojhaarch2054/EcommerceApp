@@ -55,7 +55,7 @@ const SignUp = () => {
         {
           name: inputs.fullname,
           email: inputs.emailAddress,
-          phoneNumber: inputs.phoneNumber,
+          phone_number: inputs.phoneNumber,
           address: inputs.address,
           password: inputs.password,
           confirmPassword: inputs.confirmPassword,
@@ -72,7 +72,7 @@ const SignUp = () => {
       setInputs({
         fullname: "",
         emailAddress: "",
-        phoneNumber: "",
+        phone_number: "",
         address: "",
         password: "",
         confirmPassword: "",
@@ -98,7 +98,7 @@ const SignUp = () => {
     <>
       <h1>Register your email id here: </h1>
       <div className="container">
-        <form onClick={signupSubmit}>
+        <form onSubmit={signupSubmit}>
           <div className="form-group">
             <label>Fullname</label>
             <input

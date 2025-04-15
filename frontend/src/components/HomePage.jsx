@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import NavBar from "./NavBar";
 import { CartContext } from "../context/CartContext";
 
 const HomePage = () => {
@@ -8,6 +7,7 @@ const HomePage = () => {
   const [productList, setProductList] = useState([]);
   //access addtocart function
   const { addToCart } = useContext(CartContext);
+  const [loading, setLoading] = useState(true);
 
   //fetch product list from backend
   useEffect(() => {
@@ -17,6 +17,8 @@ const HomePage = () => {
         setProductList(result.data);
       } catch (error) {
         console.error("Error fetching products:", error);
+      }finally {
+        setLoading(false); // Make sure loading state is set to false after the request
       }
     };
 
@@ -25,7 +27,6 @@ const HomePage = () => {
 
   return (
     <div>
-       <NavBar />
       <div className="container mt-4">
         <div className="row">
           {productList.map((product) => (

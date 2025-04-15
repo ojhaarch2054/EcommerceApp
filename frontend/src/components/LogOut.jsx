@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../context/AuthContext';
 import Cookies from 'js-cookie';
+import useAuth from "../context/Hook/useAuth";
 
 const Logout = () => {
     const { isAuthenticate, logOut } = useAuth();

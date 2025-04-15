@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 //create custom axios instance
 const axiosInstance = axios.create({
@@ -10,6 +11,10 @@ const axiosInstance = axios.create({
 //request interceptor to handle any additional configurations if needed
 axiosInstance.interceptors.request.use(
   (config) => {
+    const token = Cookies.get("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
     //no need to add token to the header manually as it is handled by withCredentials
     return config;
   },

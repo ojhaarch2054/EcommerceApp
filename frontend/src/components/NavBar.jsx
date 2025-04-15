@@ -1,13 +1,15 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaHome, FaUser, FaShoppingCart } from 'react-icons/fa';
-import { useAuth } from "../context/AuthContext";
+import  useAuth  from "../context/Hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import Logout from './LogOut';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
-    const { isAuthenticate, logout } = useAuth();
+    const { isAuthenticate} = useAuth();
+    console.log("Authenticated:", isAuthenticate);
+
     const navigate = useNavigate();
 
     const handleLogin = () => navigate("/logIn");
