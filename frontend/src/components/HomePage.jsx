@@ -7,8 +7,7 @@ const HomePage = () => {
   const [productList, setProductList] = useState([]);
   //access addtocart function
   const { addToCart } = useContext(CartContext);
-  const [loading, setLoading] = useState(true);
-
+  
   //fetch product list from backend
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,11 +16,9 @@ const HomePage = () => {
         setProductList(result.data);
       } catch (error) {
         console.error("Error fetching products:", error);
-      }finally {
-        setLoading(false); // Make sure loading state is set to false after the request
-      }
+        alert("Error fetching products:");
+      } 
     };
-
     fetchProducts();
   }, []);
 

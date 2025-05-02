@@ -45,5 +45,6 @@ Content-Type: application/json
   "brand": "eg Brand",
   "category": "eg Category",
   "thumbnail": "https://example.com/sample-thumbnail.jpg",
-  "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]
+  "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
+  "user_id": 1
 }

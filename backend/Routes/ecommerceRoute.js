@@ -16,7 +16,6 @@ router.post('/refresh-token', refreshToken);
 
 router.get("/products", saveProduct);
 router.post("/add_product", addProductToTable);
-router.get("/cartItems", getProductsFromTable)
-
+router.get('/cartItems/:user_id', getProductsFromTable);
 
 module.exports = router;

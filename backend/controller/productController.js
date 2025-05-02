@@ -33,6 +33,7 @@ const addProductToTable = async (req, res) => {
       category,
       thumbnail,
       images,
+      user_id
     } = req.body;
     console.log(
       "Received product:",
@@ -45,11 +46,12 @@ const addProductToTable = async (req, res) => {
       brand,
       category,
       thumbnail,
-      images
+      images,
+      user_id
     );
     //add new product into the products table
     const result = await db.query(
-      "INSERT INTO products (title, description, price, discount_percentage, rating, stock, brand, category, thumbnail, images) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 ) RETURNING *",
+      "INSERT INTO products (title, description, price, discount_percentage, rating, stock, brand, category, thumbnail, images, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 ) RETURNING *",
       [
         title,
         description,
@@ -61,6 +63,7 @@ const addProductToTable = async (req, res) => {
         category,
         thumbnail,
         images,
+        user_id
       ]
     );
     console.log("product added:", result.rows[0]);
@@ -75,7 +78,9 @@ const addProductToTable = async (req, res) => {
 //fetch data from product table
 const getProductsFromTable = async(req, res) => {
   try{
-    const result = await db.query("select * from products");
+    //extract id from rqst parameter
+    const { user_id } = req.params;
+    const result = await db.query("SELECT * FROM products WHERE user_id = $1", [user_id]);
     res.status(201).json(result.rows)
     
   }catch (error) {

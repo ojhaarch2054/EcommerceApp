@@ -1,60 +1,61 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import  useAuth  from "../context/Hook/useAuth";
+import useAuth from "../context/Hook/useAuth";
 
 const Cart = () => {
   const { cartItem } = useContext(CartContext);
-  const { isAuthenticate} = useAuth();
+  const { user, isAuthenticate } = useAuth();
 
+  //filter cart items based on the authenticated user id
+  const userCartItems = cartItem.filter((item) => item.user_id === user?.id);
 
   const paymentBtn = () => {
     console.log("Payment Clicked");
-    if(!isAuthenticate){
+    if (!isAuthenticate) {
       alert("You need to login for checkout");
-    }
-    else{
-      alert("Thank you for proceeding payment")
+    } else {
+      alert("Thank you for proceeding payment");
     }
   };
 
   return (
     <>
-    <div className="container my-5">
-      <h1 className="text-center mb-4">Your Cart</h1>
-      <div className="row">
-        {cartItem.length > 0 ? (
-          cartItem.map((item, index) => (
-            <div className="col-md-4 mb-4" key={index}>
-              <div className="card h-100">
-                <img
-                  src={item.images || "img"}
-                  className="card-img-top"
-                  alt={item.name}
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{item.name}</h5>
-                  <p className="card-text">{item.description}</p>
-                  <p className="card-text">
-                    <strong>Price:</strong> ${item.price}
-                  </p>
+      <div className="container my-5">
+        <h1 className="text-center mb-4">Your Cart</h1>
+        <div className="row">
+          {userCartItems.length > 0 ? (
+            userCartItems.map((item, index) => (
+              <div className="col-md-4 mb-4" key={index}>
+                <div className="card h-100">
+                  <img
+                    src={item.images || "img"}
+                    className="card-img-top"
+                    alt={item.name}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{item.name}</h5>
+                    <p className="card-text">{item.description}</p>
+                    <p className="card-text">
+                      <strong>Price:</strong> ${item.price}
+                    </p>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <h4 className="text-center text-muted">Your cart is empty.</h4>
             </div>
-          ))
-        ) : (
-          <div className="col-12">
-            <h4 className="text-center text-muted">Your cart is empty.</h4>
+          )}
+        </div>
+        {userCartItems.length > 0 && (
+          <div className="text-center mt-4">
+            <button className="btn btn-secondary" onClick={paymentBtn}>
+              Proceed To Payment
+            </button>
           </div>
         )}
       </div>
-      {cartItem.length > 0 && (
-        <div className="text-center mt-4">
-          <button className="btn btn-secondary" onClick={paymentBtn}>
-            Proceed To Payment
-          </button>
-        </div>
-      )}
-    </div>
     </>
   );
 };

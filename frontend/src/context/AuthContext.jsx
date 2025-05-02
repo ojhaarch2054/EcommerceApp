@@ -1,26 +1,64 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+} from "react";
 //import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 import Cookies from "js-cookie";
+//to extract user info
+import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  //save user info
+  //save authenticated user info
   const [user, setUser] = useState(null);
-  //to save token
+  //to save jwt token
   const [token, setToken] = useState(Cookies.get("token") || null);
   //to save role
   const [role, setRole] = useState(Cookies.get("role") || null);
+  //to track
+  const [loading, setLoading] = useState(true);
   //to save refresh token
-  const [refreshToken, setRefreshToken] = useState(Cookies.get("refreshToken") || null);
+  const [refreshToken, setRefreshToken] = useState(
+    Cookies.get("refreshToken") || null
+  );
+
+  //logs user state whenever it change
+  useEffect(() => {
+    console.log("AuthContext user:", user);
+  }, [user]);
+
+  useEffect(() => {
+    //get token from cookies
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        //decode using jwt
+        const decoded = jwtDecode(token);
+        console.log("Decoded token:", decoded);
+        //extract id and set in user state
+        setUser({ id: decoded.id });
+        setToken(token);
+        setRole(decoded.role);
+      } catch (err) {
+        console.error("Failed to decode token", err);
+      }
+    }
+    setLoading(false);
+    console.log("loading false..")
+  }, []);
 
   //to handle user login
   const logIn = async (email, password) => {
     try {
-      console.log("login with:", email, password); 
+      console.log("login with:", email, password);
       //post rqst to the login endpoint
-      const response = await axiosInstance.post("/logIn_users", { email, password });
+      const response = await axiosInstance.post("/logIn_users", {
+        email,
+        password,
+      });
       const { data } = response;
       console.log("Login response data:", data);
       //check role from backend and set it to user
@@ -28,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         setUser(data.user);
         setToken(data.token);
         setRefreshToken(data.refreshtoken);
-        
+
         //store token and role in cookies
         //set the token cookie with the value of data.token ensuring it is secure and has strict same-site policy
         Cookies.set("token", data.token, { secure: true, sameSite: "strict" });
@@ -56,8 +94,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
     Cookies.remove("role");
     Cookies.remove("refreshToken");
-   
-  }
+  };
 
   //ceate the object of values to provide
   const values = {
