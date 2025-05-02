@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cart from './components/Cart';
 import NavBar from './components/NavBar';
+import Profile from './components/Profile';
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/sign_up" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/carts" element={<Cart />} />
+        <Route path="/myprofile" element={<Profile />} />
       </Routes>
     </Router>
     </>
