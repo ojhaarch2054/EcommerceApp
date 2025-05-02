@@ -108,7 +108,6 @@ const postUserLogIn = async (req, res) => {
   }
 };
 
-
 //for logout
 const logOut = async (req, res) => {
   try {
@@ -155,5 +154,7 @@ const refreshToken = async (req, res) => {
     res.status(403).json({ error: "Invalid refresh token" });
   }
 };
+
+
 
 module.exports = { getUsers, postUserSignUp, postUserLogIn, logOut, refreshToken};
