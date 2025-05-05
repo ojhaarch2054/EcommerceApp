@@ -17,7 +17,8 @@ export const CartProvider = ({ children }) => {
       //if user id is missing
       if (!userId) {
         console.error("User ID is missing. Cannot add product to cart.");
-        console.log("AuthContext user object:", user);
+        //add product to the local cart state for non authenticated user
+        setCartItem((prevCart) => [...prevCart, product]);
         return;
       }
       //add user id to the product obj
@@ -48,7 +49,7 @@ export const CartProvider = ({ children }) => {
   //function to fetch cart items for a specific user
   useEffect(() => {
     if (loading) return;
-   /* if (!userId) {
+    /* if (!userId) {
       console.error("User ID is missing. Cannot fetch cart items.");
       return;
     }*/
@@ -58,7 +59,7 @@ export const CartProvider = ({ children }) => {
           `http://localhost:3000/cartItems/${userId}`
         );
         //set fetched cart item
-        setCartItem(response.data); 
+        setCartItem(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -68,7 +69,7 @@ export const CartProvider = ({ children }) => {
       fetchProducts();
     }
     //refetch cart items when user or loading state change
-  }, [user, loading]); 
+  }, [user, loading]);
 
   return (
     <CartContext.Provider value={{ cartItem, addToCart }}>
