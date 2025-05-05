@@ -33,7 +33,7 @@ const addProductToTable = async (req, res) => {
       category,
       thumbnail,
       images,
-      user_id
+      user_id,
     } = req.body;
     console.log(
       "Received product:",
@@ -63,7 +63,7 @@ const addProductToTable = async (req, res) => {
         category,
         thumbnail,
         images,
-        user_id
+        user_id,
       ]
     );
     console.log("product added:", result.rows[0]);
@@ -76,17 +76,62 @@ const addProductToTable = async (req, res) => {
 };
 
 //fetch data from product table
-const getProductsFromTable = async(req, res) => {
-  try{
+const getProductsFromTable = async (req, res) => {
+  try {
     //extract id from rqst parameter
     const { user_id } = req.params;
-    const result = await db.query("SELECT * FROM products WHERE user_id = $1", [user_id]);
-    res.status(201).json(result.rows)
-    
-  }catch (error) {
+    const result = await db.query("SELECT * FROM products WHERE user_id = $1", [
+      user_id,
+    ]);
+    res.status(201).json(result.rows);
+  } catch (error) {
     console.error("Error fetching product:", error.message, error.stack);
     res.status(500).json({ error: "Failed to fetch product" });
   }
-}
+};
 
-module.exports = { saveProduct, addProductToTable, getProductsFromTable };
+//to update the quantity of the product
+const updateQuantity = async (req, res) => {
+  try {
+    //extract product id and qnt
+    const { product_id, quantity } = req.body;
+    //validate
+    if (!product_id || quantity === undefined) {
+      //console.log("missing product id or quantity");
+      return res
+        .status(400)
+        .json({ error: "Product ID and quantity are required" });
+    }
+
+    if (quantity < 0) {
+      return res.status(400).json({ error: "Quantity cannot be negative" });
+    }
+    //update quantity in the database
+    const result = await db.query(
+      "UPDATE products SET quantity = $1 WHERE product_id = $2 RETURNING *",
+      [quantity, product_id]
+    );
+    //check if product is updated
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    console.log("Quantity updated:", result.rows[0]);
+    res
+      .status(200)
+      .json({
+        message: "Quantity updated successfully",
+        product: result.rows[0],
+      });
+  } catch (err) {
+    console.error("Server error in updateQuantity:");
+    console.error("Error updating quantity:", err.message, err.stack);
+    res.status(500).json({ error: "Failed to update quantity" });
+  }
+};
+
+module.exports = {
+  saveProduct,
+  addProductToTable,
+  getProductsFromTable,
+  updateQuantity,
+};
