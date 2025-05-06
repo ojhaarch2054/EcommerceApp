@@ -155,6 +155,30 @@ const refreshToken = async (req, res) => {
   }
 };
 
+//edit profile
+const updateUserProfile = async (req, res) => {
+  try {
+    const { id, name, email, phone_number, address } = req.body;
+    //validate input
+    if (!id || !email || !phone_number) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+    //find user by ID
+    const userResult = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ message: "user not found." });
+    }
+    //update the required fields
+    const updatedUser = await db.query(
+      "UPDATE users SET name = $1, email = $2, phone_number = $3, address = $4 WHERE id = $5 RETURNING *",
+      [name, email, phone_number, address, id]
+    );
+    res.status(200).json({ message: "user updated successfully.", user: updatedUser.rows[0] });
+  } catch (error) {
+    console.error("error updating user:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
 
 
-module.exports = { getUsers, postUserSignUp, postUserLogIn, logOut, refreshToken};
+module.exports = { getUsers, postUserSignUp, postUserLogIn, logOut, refreshToken, updateUserProfile};
