@@ -8,7 +8,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 const Cart = () => {
   const { cartItem, removeFromCart } = useContext(CartContext);
   const { user, isAuthenticate } = useAuth();
-   //store quantity of the product
+  //store quantity of the product
   const [quantities, setQuantities] = useState({});
 
   //filter cart items based on the authenticated user id
@@ -66,7 +66,6 @@ const Cart = () => {
     //update backend
     updateQuantity(product_id, newQuantity);
   };
-
   //to delete cart items
   const deleteItems = async (product_id) => {
     alert("Are you sure to delete this item?");
@@ -142,7 +141,7 @@ const Cart = () => {
                           <p>{item.title}</p>
                         </div>
                         {/*for add or subtract the item no */}
-                        <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                        {isAuthenticate && (<div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                           <button
                             className="btn px-2 "
                             onClick={() => decreaseQnt(item.product_id)}
@@ -150,7 +149,7 @@ const Cart = () => {
                             subtract
                           </button>
                           <input
-                            min="0"
+                            min="1"
                             name="quantity"
                             type="number"
                             className="form-control form-control-sm"
@@ -165,17 +164,19 @@ const Cart = () => {
                           >
                             add
                           </button>
-                        </div>
+                        </div> )}
                         <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                           <h5 className="mb-0">${item.price}</h5>
                         </div>
                         <div className="col-md-1 text-end">
-                          <button
-                            className="btn btn-danger btn-sm"
-                            onClick={() => deleteItems(item.product_id)}
-                          >
-                            delete
-                          </button>
+                          {isAuthenticate && (
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => deleteItems(item.product_id)}
+                            >
+                              delete
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
