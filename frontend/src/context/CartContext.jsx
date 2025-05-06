@@ -78,8 +78,22 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+    //sort by lowest price
+    const filterLowestPrice = () => {
+      //created copy of cart item and sort copied array
+      const sortedItems = [...cartItem].sort((a, b) => a.price - b.price);
+      //update state
+      setCartItem(sortedItems);
+    };
+  
+    //sort by highest price
+    const filterHighestPrice = () => {
+      const sortedItems = [...cartItem].sort((a, b) => b.price - a.price);
+      setCartItem(sortedItems);
+    };
+
   return (
-    <CartContext.Provider value={{ cartItem, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cartItem, addToCart, removeFromCart, setCartItem, filterHighestPrice, filterLowestPrice }}>
       {children}
     </CartContext.Provider>
   );

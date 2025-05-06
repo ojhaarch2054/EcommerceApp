@@ -1,13 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CartContext } from "../context/CartContext";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const HomePage = () => {
   //state to hold the data from response
   const [productList, setProductList] = useState([]);
-  //access addtocart function
   const { addToCart } = useContext(CartContext);
-  
+  //to store sorted list
+  const [sortedProductList, setSortedProductList] = useState([]);
+
   //fetch product list from backend
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,39 +19,69 @@ const HomePage = () => {
       } catch (error) {
         console.error("Error fetching products:", error);
         alert("Error fetching products:");
-      } 
+      }
     };
     fetchProducts();
   }, []);
 
+  //sort by lowest price
+  const filterLowestPrice = () => {
+    const sortedItems = [...productList].sort((a, b) => a.price - b.price);
+    setSortedProductList(sortedItems);
+  };
+
+  //sort by highest price
+  const filterHighestPrice = () => {
+    const sortedItems = [...productList].sort((a, b) => b.price - a.price);
+    setSortedProductList(sortedItems);
+  };
+
   return (
     <div>
       <div className="container mt-4">
+        {/*for dropdown */}
+        <div>
+          <Dropdown>
+            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+              Sort by
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#" onClick={filterLowestPrice}>
+                Lowest Price
+              </Dropdown.Item>
+              <Dropdown.Item href="#" onClick={filterHighestPrice}>
+                Highest Price
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
         <div className="row">
-          {productList.map((product) => (
-            <div className="col-md-4 mb-4" key={product.id}>
-              <div className="card">
-                <img
-                  src={product.images[0]}
-                  className="card-img-top"
-                  alt={product.name}
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{product.name}</h5>
-                  <p className="card-text">{product.description}</p>
-                  <p className="card-text">
-                    <strong>Price:</strong> ${product.price}
-                  </p>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
+          {(sortedProductList.length > 0 ? sortedProductList : productList).map(
+            (product) => (
+              <div className="col-md-4 mb-4" key={product.id}>
+                <div className="card">
+                  <img
+                    src={product.images[0]}
+                    className="card-img-top"
+                    alt={product.name}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{product.name}</h5>
+                    <p className="card-text">{product.description}</p>
+                    <p className="card-text">
+                      <strong>Price:</strong> ${product.price}
+                    </p>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => addToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Cart = () => {
-  const { cartItem, removeFromCart } = useContext(CartContext);
+  const { cartItem, removeFromCart, filterHighestPrice, filterLowestPrice} = useContext(CartContext);
   const { user, isAuthenticate } = useAuth();
   //store quantity of the product
   const [quantities, setQuantities] = useState({});
@@ -102,6 +102,7 @@ const Cart = () => {
     }
   };
 
+
   return (
     <>
       <section className="h-100">
@@ -117,7 +118,8 @@ const Cart = () => {
                       Sort by
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href="#">Price</Dropdown.Item>
+                      <Dropdown.Item href="#" onClick={filterLowestPrice}>Lowest Price</Dropdown.Item>
+                      <Dropdown.Item href="#" onClick={filterHighestPrice}>Highest Price</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
