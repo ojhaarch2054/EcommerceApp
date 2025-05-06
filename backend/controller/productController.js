@@ -129,9 +129,39 @@ const updateQuantity = async (req, res) => {
   }
 };
 
+//to remove cart item
+const removeProductsFromCart = async (req, res) => {
+  try {
+    //extract product id and userid from rqstbody
+    const { product_id, user_id } = req.body; 
+    //check if both productid and userid are provided
+    if (!product_id || !user_id) {
+      return res.status(400).json({ error: "Product ID and User ID are required" });
+    }
+    //delete the product from the products table
+    const result = await db.query(
+      "DELETE FROM products WHERE product_id = $1 AND user_id = $2 RETURNING *",
+      [product_id, user_id]
+    );
+    //check if the product was deleted
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Product not found in cart" });
+    }
+    //respond with success mesg
+    res.status(200).json({
+      message: "Product removed from cart successfully",
+      product: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error removing product from cart:", err.message);
+    res.status(500).json({ error: "Failed to remove product from cart" });
+  }
+};
+
 module.exports = {
   saveProduct,
   addProductToTable,
   getProductsFromTable,
   updateQuantity,
+  removeProductsFromCart
 };

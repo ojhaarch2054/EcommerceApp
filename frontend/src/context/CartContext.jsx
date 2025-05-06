@@ -71,8 +71,15 @@ export const CartProvider = ({ children }) => {
     //refetch cart items when user or loading state change
   }, [user, loading]);
 
+  //remove cart item
+  const removeFromCart = (product_id) => {
+    setCartItem((prevCart) =>
+      prevCart.filter((item) => item.product_id !== product_id)
+    );
+  };
+
   return (
-    <CartContext.Provider value={{ cartItem, addToCart }}>
+    <CartContext.Provider value={{ cartItem, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );

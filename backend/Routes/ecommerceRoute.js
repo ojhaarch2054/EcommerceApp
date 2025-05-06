@@ -1,7 +1,7 @@
 const express = require('express');
 const { getUsers, postUserSignUp, postUserLogIn,logOut, refreshToken} = require('../controller/userController');
 const { fetchUsers, authorizeRole } = require('../middleware/authenticationMiddleware');
-const { saveProduct, addProductToTable, getProductsFromTable, updateQuantity } = require('../controller/productController.js');
+const { saveProduct, addProductToTable, getProductsFromTable, updateQuantity, removeProductsFromCart } = require('../controller/productController.js');
 
 const router = express.Router();
 
@@ -18,4 +18,7 @@ router.get("/products", saveProduct);
 router.post("/add_product", addProductToTable);
 router.get('/cartItems/:user_id', getProductsFromTable);
 router.put('/products/:id/quantity', updateQuantity)
+router.delete('/products/:id', removeProductsFromCart);
+
+
 module.exports = router;

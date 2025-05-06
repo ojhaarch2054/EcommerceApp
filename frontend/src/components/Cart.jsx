@@ -3,33 +3,34 @@ import { CartContext } from "../context/CartContext";
 import useAuth from "../context/Hook/useAuth";
 import Dropdown from "react-bootstrap/Dropdown";
 import axios from "axios";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Cart = () => {
-  const { cartItem } = useContext(CartContext);
+  const { cartItem, removeFromCart } = useContext(CartContext);
   const { user, isAuthenticate } = useAuth();
-  const [quantities, setQuantities] = useState({}); // Store quantities per product
+   //store quantity of the product
+  const [quantities, setQuantities] = useState({});
 
   //filter cart items based on the authenticated user id
   const userCartItems = cartItem.filter((item) => item.user_id === user?.id);
 
-  const paymentBtn = () => {
-    console.log("Payment Clicked");
-    if (!isAuthenticate) {
-      alert("You need to login for checkout");
-    } else {
-      alert("Thank you for proceeding payment");
-    }
-  };
-
-  // Function to update the quantity in the backend
+  //to update the quantity in the backend
   const updateQuantity = async (product_id, newQuantity) => {
     try {
-      console.log("updating quantity for product_id:", product_id, "with quantity:", newQuantity);
-      const response = await axios.put(`http://localhost:3000/products/${product_id}/quantity`, {
-        product_id: product_id, 
-         //send quantity in the rqst body
-        quantity: newQuantity,
-      });
+      console.log(
+        "updating quantity for product_id:",
+        product_id,
+        "with quantity:",
+        newQuantity
+      );
+      const response = await axios.put(
+        `http://localhost:3000/products/${product_id}/quantity`,
+        {
+          product_id: product_id,
+          //send quantity in the rqst body
+          quantity: newQuantity,
+        }
+      );
       console.log("Quantity updated successfully:", response.data);
     } catch (error) {
       console.error("Failed to update quantity:", error);
@@ -59,11 +60,47 @@ const Cart = () => {
 
   //to handle manual quantity changes in the input field
   const handleQuantityChange = (e, product_id) => {
-    const newQuantity = Number(e.target.value)
+    const newQuantity = Number(e.target.value);
     //update the state
     setQuantities({ ...quantities, [product_id]: newQuantity });
     //update backend
     updateQuantity(product_id, newQuantity);
+  };
+
+  //to delete cart items
+  const deleteItems = async (product_id) => {
+    alert("Are you sure to delete this item?");
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/products/${product_id}`,
+        {
+          //data sent to the backend to identify user id and product id
+          data: { user_id: user?.id, product_id },
+        }
+      );
+      //check response
+      if (response.status === 200) {
+        //console.log(response.data.message);
+        removeFromCart(product_id);
+      }
+    } catch (err) {
+      if (err.response) {
+        //console.error("Error:", err.response.data.error);
+        alert(err.response.data.error);
+      } else {
+        //console.error("Error deleting product:", err);
+        alert("Failed to delete product. Please try again.");
+      }
+    }
+  };
+
+  const paymentBtn = () => {
+    console.log("Payment Clicked");
+    if (!isAuthenticate) {
+      alert("You need to login for checkout");
+    } else {
+      alert("Thank you for proceeding payment");
+    }
   };
 
   return (
@@ -80,14 +117,12 @@ const Cart = () => {
                     <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                       Sort by
                     </Dropdown.Toggle>
-
                     <Dropdown.Menu>
                       <Dropdown.Item href="#">Price</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
               </div>
-
               {userCartItems.length > 0 ? (
                 userCartItems.map((item, index) => (
                   <div className="card rounded-3 mb-4" key={index}>
@@ -108,8 +143,11 @@ const Cart = () => {
                         </div>
                         {/*for add or subtract the item no */}
                         <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                          <button className="btn px-2 " onClick={() => decreaseQnt(item.product_id)}>
-                           subtract
+                          <button
+                            className="btn px-2 "
+                            onClick={() => decreaseQnt(item.product_id)}
+                          >
+                            subtract
                           </button>
                           <input
                             min="0"
@@ -117,14 +155,27 @@ const Cart = () => {
                             type="number"
                             className="form-control form-control-sm"
                             value={quantities[item.product_id] || item.quantity}
-                            onChange={(e) => handleQuantityChange(e, item.product_id)}
+                            onChange={(e) =>
+                              handleQuantityChange(e, item.product_id)
+                            }
                           />
-                          <button className="btn px-2" onClick={() => increaseQnt(item.product_id)}>
+                          <button
+                            className="btn px-2"
+                            onClick={() => increaseQnt(item.product_id)}
+                          >
                             add
                           </button>
                         </div>
                         <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                           <h5 className="mb-0">${item.price}</h5>
+                        </div>
+                        <div className="col-md-1 text-end">
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => deleteItems(item.product_id)}
+                          >
+                            delete
+                          </button>
                         </div>
                       </div>
                     </div>
