@@ -1,0 +1,19 @@
+.navBar{
+    background-color: #85b2df !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.signupBtn{
+    background-color: rgb(225, 185, 138);
+}
+.logInBtn{
+    background-color: rgb(225, 185, 138);
+}
+.logInBtn:hover{
+    background-color: rgb(142, 137, 215);
+    color: blue !important
+}
+
+.signupBtn:hover{
+    background-color: rgb(142, 137, 215);
+    color: blue !important
+}
