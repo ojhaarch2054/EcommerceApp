@@ -8,7 +8,7 @@ import Carousel from "./Carousel";
 const HomePage = () => {
   //state to hold the data from response
   const [productList, setProductList] = useState([]);
-  const { addToCart } = useContext(CartContext);
+  const { addToCart} = useContext(CartContext);
   //to store sorted list
   const [sortedProductList, setSortedProductList] = useState([]);
 
@@ -70,7 +70,6 @@ const HomePage = () => {
                     src={product.images[0]}
                     className="card-img-top"
                     alt={product.name}
-                    
                   />
                   <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
@@ -82,7 +81,7 @@ const HomePage = () => {
                       className="btn addCartBtn"
                       onClick={() => addToCart(product)}
                     >
-                      Add to Cart
+                      Add to cart
                     </button>
                   </div>
                 </div>

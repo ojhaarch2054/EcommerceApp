@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/signUp.css";
 
 const SignUp = () => {
   //state for input section
@@ -16,6 +17,10 @@ const SignUp = () => {
   //state to save response
   const [userInfo, setUserInfo] = useState([]);
   const navigate = useNavigate();
+  //for popup message
+  const [popupMessage, setPopupMessage] = useState("");
+  //to control visibility of msg
+  const [showPopup, setShowPopup] = useState(false);
 
   //for onchange function
   const handleChange = (e) => {
@@ -32,20 +37,59 @@ const SignUp = () => {
     //prevent form submission
     e.preventDefault();
     //validation
-    if (
-      !inputs.fullname ||
-      !inputs.emailAddress ||
-      !inputs.phoneNumber ||
-      !inputs.address ||
-      !inputs.password ||
-      !inputs.confirmPassword
-    ) {
-      alert("All fields are required!");
+    if (!inputs.fullname.trim()) {
+      setPopupMessage("Fullname is required!");
+      setShowPopup(true);
+      return;
+    }
+
+    if (!inputs.emailAddress.trim()) {
+      setPopupMessage("Email address is required!");
+      setShowPopup(true);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(inputs.emailAddress)) {
+      setPopupMessage("Please enter a valid email address!");
+      setShowPopup(true);
+      return;
+    }
+
+    if (!inputs.phoneNumber.trim()) {
+      setPopupMessage("Phone number is required!");
+      setShowPopup(true);
+      return;
+    }
+
+    const phoneRegex = /^\+?[0-9]{10,15}$/;
+    if (!phoneRegex.test(inputs.phoneNumber)) {
+      setPopupMessage("Please enter a valid phone number!");
+      setShowPopup(true);
+      return;
+    }
+
+    if (!inputs.address.trim()) {
+      setPopupMessage("Address is required!");
+      setShowPopup(true);
+      return;
+    }
+
+    if (!inputs.password.trim()) {
+      setPopupMessage("Password is required!");
+      setShowPopup(true);
+      return;
+    }
+
+    if (inputs.password.length < 6) {
+      setPopupMessage("Password must be at least 6 characters long!");
+      setShowPopup(true);
       return;
     }
 
     if (inputs.password !== inputs.confirmPassword) {
-      alert("Passwords do not match!");
+      setPopupMessage("Passwords do not match!");
+      setShowPopup(true);
       return;
     }
     try {
@@ -96,8 +140,8 @@ const SignUp = () => {
 
   return (
     <>
-      <h1>Register your email id here: </h1>
-      <div className="container">
+      <h1 className="text-center mt-4 mb-4">Register your email id here: </h1>
+      <div className="container card p-4 shadow-lg">
         <form onSubmit={signupSubmit}>
           <div className="form-group">
             <label>Fullname</label>
@@ -173,14 +217,50 @@ const SignUp = () => {
             />
           </div>
           <br />
+          <div className="d-flex justify-content-center">
           <button
             type="submit"
-            className="btn btn-secondary"
+            className="btn signupBtn text-white px-4 shadow-lg"
             onClick={signupBtn}
           >
             Sign Up
           </button>
+          </div>
         </form>
+      </div>
+      {/*bnootstrap modal for popup*/}
+      <div
+        className={`modal fade ${showPopup ? "show d-block" : ""}`}
+        tabIndex="-1"
+        role="dialog"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Validation Message</h5>
+              <button
+                type="button"
+                className="close"
+                onClick={() => setShowPopup(false)}
+              >
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>{popupMessage}</p>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn popUpBtn"
+                onClick={() => setShowPopup(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

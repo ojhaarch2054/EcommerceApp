@@ -1,6 +1,7 @@
-import useAuth  from "../context/Hook/useAuth";
+import useAuth from "../context/Hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import "../styles/signUp.css";
 
 const LogIn = () => {
   const { logIn } = useAuth();
@@ -12,6 +13,8 @@ const LogIn = () => {
   });
   //to show the err msg
   const [error, setError] = useState("");
+  //to show password err mdg
+  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,16 +22,26 @@ const LogIn = () => {
       ...prevState,
       [name]: value,
     }));
-     //clear err msg when user type in input field
-     setError("");
+    //clear err msg when user type in input field
+    setError("");
+    if (name === "password") {
+      //clear password error when typing
+      setPasswordError("");
+    }
   };
 
   //to submit login
   const logInSubmit = async (e) => {
     e.preventDefault();
+    //validation
     if (!loginInput.email || !loginInput.password) {
       //set err msg
-      setError("Email and password are required."); 
+      setError("Email and password are required.");
+      return;
+    }
+    // Password validation
+    if (loginInput.password.length < 6) {
+      setPasswordError("Password must be at least 6 characters long.");
       return;
     }
     try {
@@ -48,43 +61,58 @@ const LogIn = () => {
   };
 
   const logInbtn = () => {
-    console.log("logIn btn clicked yayyyy")
-  }
+    console.log("logIn btn clicked yayyyy");
+  };
 
-    return(
-        <>
-        <div className="container">
-        <form onSubmit={logInSubmit}>
-      <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            placeholder="eg: Jenni@gmail.com"
-            name="email"
-            value={loginInput.email}
-            onChange={handleChange}
-          />
+  return (
+    <>
+      <div className="container d-flex justify-content-center align-items-center mt-5 ">
+        <div className="card shadow-lg p-5 w-75">
+          <h3 className="text-center mb-4 logInPage">Log In</h3>
+          <form onSubmit={logInSubmit} className="logInPage">
+            <div className="form-group ">
+              <label>Email</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="eg: Jenni@gmail.com"
+                name="email"
+                value={loginInput.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="password"
+                name="password"
+                value={loginInput.password}
+                onChange={handleChange}
+              />
+              {passwordError && (
+                <small className="text-danger">{passwordError}</small>
+              )}
+            </div>
+            {error && <div className="alert alert-danger mt-2">{error}</div>}
+            <br />
+            <div className="d-flex justify-content-center">
+              <button
+                className="btn logInBtn text-white px-4 shadow-lg"
+                type="submit"
+                onClick={logInbtn}
+              >
+                Log In
+              </button>
+            </div>{" "}
+          </form>
         </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            placeholder="password"
-            name="password"
-            value={loginInput.password}
-            onChange={handleChange}
-          />
-        </div><br />
-        <button className="btn btn-secondary" type="submit" onClick={logInbtn}>Log In</button>
-        </form>
-        </div>
-        </>
-    )
-}
-
+      </div>
+    </>
+  );
+};
 
 export default LogIn;
