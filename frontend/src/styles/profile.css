@@ -1,0 +1,25 @@
+.profileCard{
+    background-color: rgb(235, 173, 103) !important;
+}
+
+.profileCard .card-body {
+    color:  #063e75 !important;
+}
+
+h4{
+    color:  #063e75 !important;
+}
+.editBtn{
+    background-color: #85b2df;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+}
+
+.editBtn:hover{
+        background-color: #5d9cdc;
+        transform: scale(1.05);
+        color: white;
+}
+.logInBtn{
+    
+}

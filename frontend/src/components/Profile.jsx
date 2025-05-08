@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../context/Hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/profile.css";
 
 const Profile = () => {
   const { isAuthenticate, user } = useAuth();
@@ -24,7 +25,8 @@ const Profile = () => {
   };
 
   //filter profile based on the authenticated user id
-  const filterProfile = userDetails?.find((item) => item.id === user?.id) || null;
+  const filterProfile =
+    userDetails?.find((item) => item.id === user?.id) || null;
   console.log("Filtered profile:", filterProfile);
 
   //fetch user details
@@ -65,9 +67,9 @@ const Profile = () => {
       alert("Error updating profile");
     }
   };
-// Handle input changes in the form and update formData state
+  // Handle input changes in the form and update formData state
   const handleInputChange = (e) => {
-     // Destructure name and value from the event
+    // Destructure name and value from the event
     const { name, value } = e.target;
     //update form obj
     setFormData({ ...formData, [name]: value });
@@ -75,7 +77,7 @@ const Profile = () => {
 
   //enable edit mode
   const handleEdit = () => {
-      //enable edit mode
+    //enable edit mode
     setIsEditing(true);
     setFormData({
       id: filterProfile.id,
@@ -85,7 +87,7 @@ const Profile = () => {
       address: filterProfile.address,
     });
   };
-//save updated profile by calling the updateProfile fun
+  //save updated profile by calling the updateProfile fun
   const handleSave = () => {
     //destructure form data
     const { id, name, email, phone_number, address } = formData;
@@ -94,7 +96,7 @@ const Profile = () => {
   };
 
   const handleCancel = () => {
-   // exist editing mode
+    // exist editing mode
     setIsEditing(false);
   };
 
@@ -102,11 +104,10 @@ const Profile = () => {
     <div className="container mt-5">
       {isAuthenticate ? (
         <div className="text-center">
-          <h1 className="display-4 mb-4">Your Profile</h1>
           {/*check if user profile exist or not and editing mode or npot*/}
           {filterProfile ? (
             isEditing ? (
-              <div className="card mx-auto">
+              <div className="card mx-auto profileCard">
                 <div className="card-header bg-secondary text-white">
                   <h4 className="mb-0">Edit Profile</h4>
                 </div>
@@ -143,7 +144,7 @@ const Profile = () => {
                         onChange={handleInputChange}
                       />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group ">
                       <label>Address</label>
                       <input
                         type="text"
@@ -155,21 +156,27 @@ const Profile = () => {
                     </div>
                   </form>
                   {/*btns to save or cancel changes */}
-                  <button className="btn btn-secondary mt-3" onClick={handleSave}>
+                  <button
+                    className="btn btn-secondary mt-3"
+                    onClick={handleSave}
+                  >
                     Save Changes
                   </button>
-                  <button className="btn btn-danger mt-3 ml-2" onClick={handleCancel}>
+                  <button
+                    className="btn btn-danger mt-3 ml-2"
+                    onClick={handleCancel}
+                  >
                     Cancel
                   </button>
                 </div>
               </div>
             ) : (
-                //display user's details
-              <div className="card mx-auto">
-                <div className="card-header bg-secondary text-white">
+              //display user's details
+              <div className="card mx-auto profileCard">
+                <div className="card-header text-white">
                   <h4 className="mb-0">User's Details</h4>
                 </div>
-                <div className="card-body">
+                <div className="card-body ">
                   <p>
                     <strong>Name: </strong>
                     {filterProfile.name}
@@ -187,7 +194,10 @@ const Profile = () => {
                     {filterProfile.address}
                   </p>
                   {/*to enable edit mode*/}
-                  <button className="btn btn-secondary" onClick={handleEdit}>
+                  <button
+                    className="btn btn-secondary editBtn"
+                    onClick={handleEdit}
+                  >
                     Edit Profile
                   </button>
                 </div>
@@ -199,10 +209,14 @@ const Profile = () => {
         </div>
       ) : (
         <div>
-              <p>Please log in to view your profile.</p>
-              <button onClick={logInbtnn}>logIn</button>
+          <p className="text-center ">Please log in to view your profile.</p>
+          <button
+            className="btn logInBtn d-block mx-auto px-4 text-white"
+            onClick={logInbtnn}
+          >
+            LogIn Here
+          </button>{" "}
         </div>
-      
       )}
     </div>
   );

@@ -4,6 +4,7 @@ import useAuth from "../context/Hook/useAuth";
 import Dropdown from "react-bootstrap/Dropdown";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "../styles/cartCard.css"
 
 const Cart = () => {
   const { cartItem, removeFromCart, filterHighestPrice, filterLowestPrice} = useContext(CartContext);
@@ -110,7 +111,7 @@ const Cart = () => {
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-10">
               <div className="d-flex justify-content-between align-items-center mb-4">
-                <h3 className="fw-normal mb-0">Shopping Cart</h3>
+                <h3 className="fw-normal mb-0 headingCart">Shopping Cart</h3>
                 {/*for dropdown */}
                 <div>
                   <Dropdown>
@@ -126,7 +127,7 @@ const Cart = () => {
               </div>
               {userCartItems.length > 0 ? (
                 userCartItems.map((item, index) => (
-                  <div className="card rounded-3 mb-4" key={index}>
+                  <div className="card cartCard rounded-3 mb-4" key={index}>
                     <div className="card-body p-4">
                       <div className="row d-flex justify-content-between align-items-center">
                         <div className="col-md-2 col-lg-2 col-xl-2">
@@ -145,7 +146,7 @@ const Cart = () => {
                         {/*for add or subtract the item no */}
                         {isAuthenticate && (<div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                           <button
-                            className="btn px-2 "
+                            className="btn px-2 inputField"
                             onClick={() => decreaseQnt(item.product_id)}
                           >
                             subtract
@@ -154,14 +155,14 @@ const Cart = () => {
                             min="1"
                             name="quantity"
                             type="number"
-                            className="form-control form-control-sm"
+                            className="form-control form-control-sm  inputField "
                             value={quantities[item.product_id] || item.quantity}
                             onChange={(e) =>
                               handleQuantityChange(e, item.product_id)
                             }
                           />
                           <button
-                            className="btn px-2"
+                            className="btn px-2 inputField"
                             onClick={() => increaseQnt(item.product_id)}
                           >
                             add
@@ -173,10 +174,10 @@ const Cart = () => {
                         <div className="col-md-1 text-end">
                           {isAuthenticate && (
                             <button
-                              className="btn btn-danger btn-sm"
+                              className="btn btn-danger btn-sm p-2"
                               onClick={() => deleteItems(item.product_id)}
                             >
-                              delete
+                              Delete
                             </button>
                           )}
                         </div>
@@ -194,7 +195,7 @@ const Cart = () => {
               <div className="card">
                 <button
                   type="button"
-                  className="btn btn-secondary btn-block btn-lg"
+                  className="btn btn-secondary btn-block btn-lg payBtn"
                   onClick={paymentBtn}
                 >
                   Proceed to Pay

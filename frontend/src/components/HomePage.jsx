@@ -45,7 +45,7 @@ const HomePage = () => {
         {/*for dropdown */}
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div className="flex-grow-1 text-center">
-            <h3 className="mb-3">Find Your Favorites</h3>
+            <h3 className="mb-3 ">Find Your Favorites</h3>
           </div>
           <Dropdown>
             <Dropdown.Toggle variant="secondary" id="dropdown-basic">
@@ -70,6 +70,7 @@ const HomePage = () => {
                     src={product.images[0]}
                     className="card-img-top"
                     alt={product.name}
+                    
                   />
                   <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
