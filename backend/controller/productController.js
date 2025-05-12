@@ -102,26 +102,33 @@ const updateQuantity = async (req, res) => {
         .status(400)
         .json({ error: "Product ID and quantity are required" });
     }
-
+    //check if qnt is neg
     if (quantity < 0) {
       return res.status(400).json({ error: "Quantity cannot be negative" });
     }
-    //update quantity in the database
-    const result = await db.query(
-      "UPDATE products SET quantity = $1 WHERE product_id = $2 RETURNING *",
-      [quantity, product_id]
+    //query the database to get the price of the product using the product_id
+    const getPrice = await db.query(
+      "SELECT price FROM products WHERE product_id = $1",
+      [product_id]
     );
-    //check if product is updated
-    if (result.rowCount === 0) {
+    //if the product exists in db
+    if (getPrice.rowCount === 0) {
       return res.status(404).json({ error: "Product not found" });
     }
-    console.log("Quantity updated:", result.rows[0]);
-    res
-      .status(200)
-      .json({
-        message: "Quantity updated successfully",
-        product: result.rows[0],
-      });
+    //take unit price of product from the query result
+    const unitPrice = getPrice.rows[0].price;
+    //calculate new total price
+    const newTotalPrice = unitPrice * quantity;
+    //update the product's qnt and total price in db
+    const result = await db.query(
+      "UPDATE products SET quantity = $1, total_price = $2 WHERE product_id = $3 RETURNING *",
+      [quantity, newTotalPrice, product_id]
+    );
+    //return a success response with the updated product details
+    res.status(200).json({
+      message: "Quantity and total price updated successfully",
+      product: result.rows[0],
+    });
   } catch (err) {
     console.error("Server error in updateQuantity:");
     console.error("Error updating quantity:", err.message, err.stack);
@@ -133,10 +140,12 @@ const updateQuantity = async (req, res) => {
 const removeProductsFromCart = async (req, res) => {
   try {
     //extract product id and userid from rqstbody
-    const { product_id, user_id } = req.body; 
+    const { product_id, user_id } = req.body;
     //check if both productid and userid are provided
     if (!product_id || !user_id) {
-      return res.status(400).json({ error: "Product ID and User ID are required" });
+      return res
+        .status(400)
+        .json({ error: "Product ID and User ID are required" });
     }
     //delete the product from the products table
     const result = await db.query(
@@ -163,5 +172,5 @@ module.exports = {
   addProductToTable,
   getProductsFromTable,
   updateQuantity,
-  removeProductsFromCart
+  removeProductsFromCart,
 };

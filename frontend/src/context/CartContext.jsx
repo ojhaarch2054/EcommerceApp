@@ -19,10 +19,7 @@ export const CartProvider = ({ children }) => {
   //function to fetch cart items for a specific user
   useEffect(() => {
     if (loading) return;
-    /* if (!userId) {
-        console.error("User ID is missing. Cannot fetch cart items.");
-        return;
-      }*/
+    //fetch cart item
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
@@ -30,6 +27,13 @@ export const CartProvider = ({ children }) => {
         );
         //set fetched cart item
         setCartItem(response.data);
+        //sync quantities from cart data
+        const initialQuantities = {};
+        response.data.forEach((item) => {
+          //if the products qnt is missing defaults 1
+          initialQuantities[item.product_id] = item.quantity || 1;
+        });
+        setQuantities(initialQuantities);
       } catch (error) {
         console.error("Error fetching products:", error);
       }

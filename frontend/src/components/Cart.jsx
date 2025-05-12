@@ -3,15 +3,27 @@ import { CartContext } from "../context/CartContext";
 import useAuth from "../context/Hook/useAuth";
 import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "../styles/cartCard.css"
+import "../styles/cartCard.css";
 
 const Cart = () => {
-  const { cartItem, filterHighestPrice, filterLowestPrice, increaseQnt, decreaseQnt, handleQuantityChange, quantities, deleteItems} = useContext(CartContext);
+  const {
+    cartItem,
+    filterHighestPrice,
+    filterLowestPrice,
+    increaseQnt,
+    decreaseQnt,
+    handleQuantityChange,
+    quantities,
+    deleteItems,
+  } = useContext(CartContext);
   const { user, isAuthenticate } = useAuth();
 
   //filter cart items based on the authenticated user id
-  const userCartItems = useMemo(() => cartItem.filter((item) => item.user_id === user?.id), [cartItem, user]);
-  
+  const userCartItems = useMemo(
+    () => cartItem.filter((item) => item.user_id === user?.id),
+    [cartItem, user]
+  );
+
   const paymentBtn = () => {
     console.log("Payment Clicked");
     if (!isAuthenticate) {
@@ -20,6 +32,13 @@ const Cart = () => {
       alert("Thank you for proceeding payment");
     }
   };
+
+  //calculate subtottal
+  const subtotal = userCartItems.reduce((total, item) => {
+    const itemTotal =
+      item.price * (quantities[item.product_id] || item.quantity);
+    return total + itemTotal;
+  }, 0);
 
   return (
     <>
@@ -36,15 +55,22 @@ const Cart = () => {
                       Sort by
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href="#" onClick={filterLowestPrice}>Lowest Price</Dropdown.Item>
-                      <Dropdown.Item href="#" onClick={filterHighestPrice}>Highest Price</Dropdown.Item>
+                      <Dropdown.Item href="#" onClick={filterLowestPrice}>
+                        Lowest Price
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#" onClick={filterHighestPrice}>
+                        Highest Price
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
               </div>
               {userCartItems.length > 0 ? (
                 userCartItems.map((item, index) => (
-                  <div className="card cartCard rounded-3 mb-4 px-5" key={index}>
+                  <div
+                    className="card cartCard rounded-3 mb-4 px-5"
+                    key={index}
+                  >
                     <div className="card-body p-4">
                       <div className="row d-flex justify-content-between align-items-center">
                         <div className="col-md-2 col-lg-2 col-xl-2">
@@ -61,32 +87,47 @@ const Cart = () => {
                           <p>{item.title}</p>
                         </div>
                         {/*for add or subtract the item no */}
-                        {isAuthenticate && (<div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                          <button
-                            className="btn px-2 inputField"
-                            onClick={() => decreaseQnt(item.product_id)}
-                          >
-                            subtract
-                          </button>
-                          <input
-                            min="1"
-                            name="quantity"
-                            type="number"
-                            className="form-control form-control-sm  inputField "
-                            value={quantities[item.product_id] || item.quantity}
-                            onChange={(e) =>
-                              handleQuantityChange(e, item.product_id)
-                            }
-                          />
-                          <button
-                            className="btn px-2 inputField"
-                            onClick={() => increaseQnt(item.product_id)}
-                          >
-                            add
-                          </button>
-                        </div> )}
-                        <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                          <h5 className="mb-0">${item.price}</h5>
+                        {isAuthenticate && (
+                          <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <button
+                              className="btn px-2 inputField"
+                              onClick={() => decreaseQnt(item.product_id)}
+                            >
+                              subtract
+                            </button>
+                            <input
+                              min="1"
+                              name="quantity"
+                              type="number"
+                              className="form-control form-control-sm  inputField "
+                              value={
+                                quantities[item.product_id] || item.quantity
+                              }
+                              onChange={(e) =>
+                                handleQuantityChange(e, item.product_id)
+                              }
+                            />
+                            <button
+                              className="btn px-2 inputField"
+                              onClick={() => increaseQnt(item.product_id)}
+                            >
+                              add
+                            </button>
+                          </div>
+                        )}
+                        <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1 ">
+                          <small className="text-muted ">
+                            Unit Price: ${item.price}
+                          </small>
+                          <br />
+                          <br />
+                          <strong>
+                            Total: $
+                            {(
+                              item.price *
+                              (quantities[item.product_id] || item.quantity)
+                            ).toFixed(2)}
+                          </strong>
                         </div>
                         <div className="col-md-1 text-end">
                           {isAuthenticate && (
@@ -110,13 +151,16 @@ const Cart = () => {
                 </div>
               )}
               <div className="card">
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-block btn-lg payBtn"
-                  onClick={paymentBtn}
-                >
-                  Proceed to Pay
-                </button>
+                <div className="card-body">
+                  <h5 className="text-end">Subtotal: ${(subtotal).toFixed(2)}</h5>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-block btn-lg payBtn"
+                    onClick={paymentBtn}
+                  >
+                    Proceed to Pay
+                  </button>
+                </div>
               </div>
             </div>
           </div>
