@@ -1,7 +1,7 @@
 import Carousel from 'react-bootstrap/Carousel';
-import image1 from '../Assets/image1.jpg';
-import image2 from '../Assets/image1.jpg';
-import image3 from '../Assets/image1.jpg';
+import image1 from '../Assets/shopp.avif';
+import image2 from '../Assets/shopp.avif';
+import image3 from '../Assets/shopp.avif';
 import "../styles/nav.css"
 
 const CarouselSection = () => {

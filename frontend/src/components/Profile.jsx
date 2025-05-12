@@ -38,7 +38,7 @@ const Profile = () => {
       }
     };
     fetchUsers();
-  }, []);
+  }, [isAuthenticate, setLoading]);
 
   //filter profile based on the authenticated user id
   const filterProfile =
