@@ -104,6 +104,7 @@ export const AuthProvider = ({ children }) => {
     logIn,
     logOut,
     isAuthenticate: !!token, //check if token exists
+    setLoading
   };
 
   return (

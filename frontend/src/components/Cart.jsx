@@ -150,9 +150,23 @@ const Cart = () => {
                   </h4>
                 </div>
               )}
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="text-end">Subtotal: ${(subtotal).toFixed(2)}</h5>
+              {isAuthenticate ? (
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="text-end">
+                      Subtotal: ${subtotal.toFixed(2)}
+                    </h5>
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-block btn-lg payBtn"
+                      onClick={paymentBtn}
+                    >
+                      Proceed to Pay
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="card">
                   <button
                     type="button"
                     className="btn btn-secondary btn-block btn-lg payBtn"
@@ -161,7 +175,7 @@ const Cart = () => {
                     Proceed to Pay
                   </button>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

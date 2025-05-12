@@ -5,7 +5,7 @@ import axios from "axios";
 import "../styles/profile.css";
 
 const Profile = () => {
-  const { isAuthenticate, user } = useAuth();
+  const { isAuthenticate, user, setLoading } = useAuth();
   const navigate = useNavigate();
   //store use details
   const [userDetails, setUserDetails] = useState(null);
@@ -23,6 +23,22 @@ const Profile = () => {
   const logInbtnn = () => {
     navigate("/login");
   };
+
+  //fetch user detail
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const result = await axios.get("http://localhost:3000/users");
+        setUserDetails(result.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        alert("Error fetching users");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   //filter profile based on the authenticated user id
   const filterProfile =

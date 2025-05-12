@@ -54,7 +54,6 @@ const NavBar = () => {
           <ul className="navbar-nav ms-auto">
             {isAuthenticate ? (
               <>
-                <h1>You are logged in</h1>
                 <li className="nav-item">
                   <Logout />
                 </li>
