@@ -4,6 +4,7 @@ import { CartContext } from "../context/CartContext";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../styles/homePage.css";
 import Carousel from "./Carousel";
+import Footer from "./Footer";
 
 const HomePage = () => {
   //state to hold the data from response
@@ -39,6 +40,7 @@ const HomePage = () => {
   };
 
   return (
+    <>
     <div className="homePage mt-0">
       <Carousel />
       <div className="container mt-4 ">
@@ -91,6 +93,8 @@ const HomePage = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min"; 
 import { FaHome, FaUser, FaShoppingCart } from "react-icons/fa";
 import useAuth from "../context/Hook/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ const NavBar = () => {
               <>
                 <li className="nav-item">
                   <button
-                    className="btn logInBtn text-white mx-2"
+                    className="btn logInBtn text-white mx-2 mx-sm-1 mb-sm-2 mt-sm-2"
                     onClick={handleLogin}
                   >
                     Log In
@@ -70,7 +70,7 @@ const NavBar = () => {
                 </li>
                 <li className="nav-item">
                   <button
-                    className="btn signupBtn text-white"
+                    className="btn signupBtn text-white mx-sm-1 mb-sm-2 mt-sm-2"
                     onClick={handleSignUp}
                   >
                     Sign Up
